@@ -1,0 +1,10 @@
+# Uploaded media files (managed on server, not in version control)
+assets/uploads/hero/*
+assets/uploads/sponsors/*
+assets/uploads/events/*
+!assets/uploads/hero/.gitkeep
+!assets/uploads/sponsors/.gitkeep
+!assets/uploads/events/.gitkeep
+
+# Admin password hash — server-specific, never commit
+data/config.json

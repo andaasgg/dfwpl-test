@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dfwpl-test",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "localhost:8765", "-t", "/Users/ggibson/projects/dfwpl-test"],
+      "port": 8765
+    }
+  ]
+}

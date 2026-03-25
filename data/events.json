@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "name": "Alan Marx Memorial Pinball Fundraiser",
+        "date": "2025-10-05",
+        "venue": "Marx House",
+        "address": "4606 Toler Road, Rowlett, TX 75089",
+        "cost": "$30 suggested donation · Kids under 16 free",
+        "description": "The 12th Annual Alan Marx Memorial IFPA Pinball Fundraiser. Beat-the-clock qualifying format with A, B, and C skill level divisions. Doors open 11:00 AM, tournament starts at noon. No RSVP or pre-registration required.",
+        "url": "",
+        "visible": true
+    },
+    {
+        "id": 2,
+        "name": "Carpool Pinball Monthly League Event",
+        "date": "2026-04-05",
+        "venue": "Carpool Pinball",
+        "address": "Dallas, TX",
+        "cost": "$15 adults · Kids 16 & under free",
+        "description": "Monthly competitive league event open to all skill levels. Counts toward championship qualification.",
+        "url": "",
+        "visible": true
+    },
+    {
+        "id": 3,
+        "name": "Carpool Pinball Monthly League Event",
+        "date": "2026-05-03",
+        "venue": "Carpool Pinball",
+        "address": "Dallas, TX",
+        "cost": "$15 adults · Kids 16 & under free",
+        "description": "Monthly competitive league event open to all skill levels. Counts toward championship qualification.",
+        "url": "",
+        "visible": true
+    }
+]

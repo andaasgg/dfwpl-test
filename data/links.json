@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "label": "IFPA — International Flipper Pinball Association",
+        "url": "https://www.ifpapinball.com",
+        "description": "Official rankings, results, and event listings",
+        "category": "official"
+    },
+    {
+        "id": 2,
+        "label": "DFW Pinball League on IFPA",
+        "url": "https://www.ifpapinball.com/series/details/?s=2085",
+        "description": "Our official series page with full results history",
+        "category": "official"
+    },
+    {
+        "id": 3,
+        "label": "Tilt Forums",
+        "url": "https://tiltforums.com",
+        "description": "Competitive pinball community forums",
+        "category": "community"
+    }
+]
