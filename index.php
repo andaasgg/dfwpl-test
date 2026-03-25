@@ -72,19 +72,34 @@ require __DIR__ . '/includes/header.php';
   </div>
 
   <!-- About -->
+  <?php
+    $about_img = $home['about_image'] ?? '';
+    $about_img_pos = $home['about_image_position'] ?? 'right';
+  ?>
   <div class="section">
     <h2 class="section-title"><?= esc($home['about_title'] ?? 'About') ?></h2>
+
+    <?php if ($about_img && $about_img_pos === 'top'): ?>
+      <img src="<?= esc($about_img) ?>" alt="" class="about-img about-img-top">
+    <?php endif; ?>
+
     <div style="display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start;">
       <div class="about-text">
+        <?php if ($about_img && $about_img_pos === 'right'): ?>
+          <img src="<?= esc($about_img) ?>" alt="" class="about-img about-img-right">
+        <?php endif; ?>
         <?php foreach (explode("\n\n", str_replace("\r\n", "\n", $home['about_body'] ?? '')) as $para): ?>
-          <?php if (trim($para)): ?><p><?= esc(trim($para)) ?></p><?php endif; ?>
+          <?php if (trim($para)): ?><p><?= render_md(trim($para)) ?></p><?php endif; ?>
         <?php endforeach; ?>
+        <?php if ($about_img && $about_img_pos === 'bottom'): ?>
+          <img src="<?= esc($about_img) ?>" alt="" class="about-img about-img-bottom">
+        <?php endif; ?>
       </div>
       <div class="card" style="background:var(--surface2);">
         <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">Quick Facts</div>
         <div class="info-list">
           <?php foreach (($home['info_items'] ?? []) as $item): ?>
-            <div class="info-item"><?= esc($item) ?></div>
+            <div class="info-item"><?= render_md($item) ?></div>
           <?php endforeach; ?>
         </div>
       </div>

@@ -17,5 +17,7 @@
     "stat_label_cost": "Typical Entry",
     "stat_label_events": "Events / Season",
     "hero_image": "",
-    "footer_text": ""
+    "footer_text": "",
+    "about_image": "",
+    "about_image_position": "right"
 }

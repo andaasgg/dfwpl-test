@@ -28,6 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $raw_items = trim($_POST['info_items'] ?? '');
     $home['info_items'] = array_values(array_filter(array_map('trim', explode("\n", $raw_items))));
 
+    $home['about_image_position'] = $_POST['about_image_position'] ?? 'right';
+
+    // About image — handle upload or removal
+    if (!empty($_POST['remove_about_image'])) {
+        $home['about_image'] = '';
+    } elseif (!empty($_FILES['about_image']['name'])) {
+        $path = handle_upload($_FILES['about_image'], uploads_path('hero'));
+        if ($path) $home['about_image'] = $path;
+        else $error = 'About image upload failed. JPG/PNG/GIF/WebP under 5 MB only.';
+    }
+
     // Hero image — handle upload or removal
     if (!empty($_POST['remove_hero_image'])) {
         $home['hero_image'] = '';
@@ -129,7 +140,33 @@ $info_items_text = implode("\n", $home['info_items'] ?? []);
           <label class="form-label" for="about_body">About Text</label>
           <textarea class="form-textarea" id="about_body" name="about_body"
                     rows="8"><?= esc($home['about_body'] ?? '') ?></textarea>
-          <div class="form-hint">Separate paragraphs with a blank line.</div>
+          <div class="form-hint">
+            Separate paragraphs with a blank line.
+            Basic formatting: <code>**bold**</code>, <code>*italic*</code>, <code>[link text](https://...)</code>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">About Image (optional)</label>
+          <?php $cur_about_img = $home['about_image'] ?? ''; ?>
+          <?php if ($cur_about_img): ?>
+            <div style="margin-bottom:10px;">
+              <img src="<?= esc($cur_about_img) ?>" alt=""
+                   style="max-width:100%;max-height:160px;border-radius:8px;object-fit:cover;border:1px solid var(--border);">
+            </div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-bottom:10px;cursor:pointer;">
+              <input type="checkbox" name="remove_about_image" value="1"> Remove image
+            </label>
+          <?php endif; ?>
+          <input class="form-input" type="file" name="about_image" accept="image/jpeg,image/png,image/gif,image/webp"
+                 style="padding:6px 10px;margin-bottom:10px;">
+          <div class="form-hint" style="margin-bottom:10px;">JPG/PNG/GIF/WebP · max 5 MB</div>
+          <label class="form-label" for="about_image_position" style="margin-top:4px;">Image Position</label>
+          <select class="form-select" id="about_image_position" name="about_image_position">
+            <?php foreach (['right' => 'Float right (wraps text around it)', 'top' => 'Above the text', 'bottom' => 'Below the text'] as $val => $label): ?>
+              <option value="<?= $val ?>"<?= ($home['about_image_position'] ?? 'right') === $val ? ' selected' : '' ?>><?= $label ?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
 
         <div class="form-group">

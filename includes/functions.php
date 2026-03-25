@@ -31,6 +31,23 @@ function next_id(array $items): int {
     return max(array_column($items, 'id')) + 1;
 }
 
+/**
+ * Render a small subset of Markdown to HTML safely.
+ * HTML is escaped first, so no raw tags can sneak in.
+ * Supported: **bold**, *italic*, _italic_, [link text](url)
+ */
+function render_md(string $text): string {
+    $text = esc($text);
+    // Bold
+    $text = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $text);
+    // Italic
+    $text = preg_replace('/\*(.+?)\*/', '<em>$1</em>', $text);
+    $text = preg_replace('/_(.+?)_/', '<em>$1</em>', $text);
+    // Links — URL was already HTML-escaped by esc() above, which is correct for href attributes
+    $text = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2" target="_blank" rel="noopener">$1</a>', $text);
+    return $text;
+}
+
 function uploads_path(string $subdir = ''): string {
     return __DIR__ . '/../assets/uploads' . ($subdir ? '/' . ltrim($subdir, '/') : '');
 }
