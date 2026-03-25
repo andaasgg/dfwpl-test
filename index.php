@@ -76,7 +76,7 @@ require __DIR__ . '/includes/header.php';
     <h2 class="section-title"><?= esc($home['about_title'] ?? 'About') ?></h2>
     <div style="display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start;">
       <div class="about-text">
-        <?php foreach (explode("\n\n", $home['about_body'] ?? '') as $para): ?>
+        <?php foreach (explode("\n\n", str_replace("\r\n", "\n", $home['about_body'] ?? '')) as $para): ?>
           <?php if (trim($para)): ?><p><?= esc(trim($para)) ?></p><?php endif; ?>
         <?php endforeach; ?>
       </div>

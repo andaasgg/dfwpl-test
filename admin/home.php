@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $home['hero_title']         = trim($_POST['hero_title']         ?? '');
     $home['hero_tagline']       = trim($_POST['hero_tagline']       ?? '');
     $home['about_title']        = trim($_POST['about_title']        ?? '');
-    $home['about_body']         = trim($_POST['about_body']         ?? '');
+    $home['about_body']         = trim(str_replace("\r\n", "\n", $_POST['about_body'] ?? ''));
     $home['stat_founded']       = trim($_POST['stat_founded']       ?? '');
     $home['stat_cost']          = trim($_POST['stat_cost']          ?? '');
     $home['stat_events']        = trim($_POST['stat_events']        ?? '');
