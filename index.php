@@ -112,31 +112,37 @@ require __DIR__ . '/includes/header.php';
     <h2 class="section-title">Upcoming Events</h2>
     <div class="events-list">
       <?php foreach ($upcoming as $e):
-        $dt    = new DateTime($e['date']);
-        $url   = $e['url'] ?? '';
-        $tag   = $url ? 'a' : 'div';
-        $href  = $url ? ' href="' . esc($url) . '" target="_blank" rel="noopener"' : '';
-        $extra = $url ? ' has-url' : '';
+        $dt  = new DateTime($e['date']);
+        $url = $e['url'] ?? '';
       ?>
-      <<?= $tag ?> class="event-card<?= $extra ?>"<?= $href ?>>
-        <div class="event-date-block">
-          <div class="event-date-month"><?= $dt->format('M') ?></div>
-          <div class="event-date-day"><?= $dt->format('j') ?></div>
-          <div class="event-date-year"><?= $dt->format('Y') ?></div>
-        </div>
-        <div class="event-info">
-          <div class="event-name"><?= esc($e['name']) ?></div>
-          <?php if (!empty($e['venue'])): ?>
-            <div class="event-venue"><?= esc($e['venue']) ?><?= !empty($e['address']) ? ' · ' . esc($e['address']) : '' ?></div>
-          <?php endif; ?>
-          <div class="event-tags">
-            <?php if (!empty($e['cost'])): ?>
-              <span class="event-tag cost"><?= esc($e['cost']) ?></span>
-            <?php endif; ?>
+      <div class="event-card">
+        <div class="event-header">
+          <div class="event-date-block">
+            <div class="event-date-month"><?= $dt->format('M') ?></div>
+            <div class="event-date-day"><?= $dt->format('j') ?></div>
+            <div class="event-date-year"><?= $dt->format('Y') ?></div>
           </div>
+          <div class="event-info">
+            <div class="event-name"><?= esc($e['name']) ?></div>
+            <?php if (!empty($e['venue'])): ?>
+              <div class="event-venue"><?= esc($e['venue']) ?><?= !empty($e['address']) ? ' · ' . esc($e['address']) : '' ?></div>
+            <?php endif; ?>
+            <div class="event-tags">
+              <?php if (!empty($e['cost'])): ?>
+                <span class="event-tag cost"><?= esc($e['cost']) ?></span>
+              <?php endif; ?>
+              <?php if (!empty($e['brief'])): ?>
+                <span class="event-tag"><?= esc($e['brief']) ?></span>
+              <?php endif; ?>
+            </div>
+          </div>
+          <?php if ($url): ?>
+          <div class="event-actions">
+            <a class="event-link-btn" href="<?= esc($url) ?>" target="_blank" rel="noopener" title="More info">&#8599;</a>
+          </div>
+          <?php endif; ?>
         </div>
-        <?php if ($url): ?><div class="event-arrow">&#8599;</div><?php endif; ?>
-      </<?= $tag ?>>
+      </div>
       <?php endforeach; ?>
     </div>
     <div style="margin-top:16px;">

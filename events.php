@@ -30,36 +30,61 @@ require __DIR__ . '/includes/header.php';
     <h2 class="section-title">Upcoming</h2>
     <div class="events-list">
       <?php foreach ($upcoming as $e):
-        $dt   = new DateTime($e['date']);
-        $url  = $e['url'] ?? '';
-        $tag  = $url ? 'a' : 'div';
-        $href = $url ? ' href="' . esc($url) . '" target="_blank" rel="noopener"' : '';
-        $extra = $url ? ' has-url' : '';
+        $dt         = new DateTime($e['date']);
+        $url        = $e['url'] ?? '';
+        $has_desc   = !empty(trim($e['description'] ?? ''));
+        $has_photo  = !empty($e['photo_url'] ?? '');
+        $expandable = $has_desc || $has_photo;
       ?>
-      <<?= $tag ?> class="event-card<?= $extra ?>"<?= $href ?>>
-        <div class="event-date-block">
-          <div class="event-date-month"><?= $dt->format('M') ?></div>
-          <div class="event-date-day"><?= $dt->format('j') ?></div>
-          <div class="event-date-year"><?= $dt->format('Y') ?></div>
-        </div>
-        <div class="event-info">
-          <div class="event-name"><?= esc($e['name']) ?></div>
-          <?php if (!empty($e['venue'])): ?>
-            <div class="event-venue">
-              <?= esc($e['venue']) ?><?= !empty($e['address']) ? ' · ' . esc($e['address']) : '' ?>
-            </div>
-          <?php endif; ?>
-          <div class="event-tags">
-            <?php if (!empty($e['cost'])): ?>
-              <span class="event-tag cost"><?= esc($e['cost']) ?></span>
+      <div class="event-card<?= $expandable ? ' expandable' : '' ?>"
+           <?= $expandable ? 'onclick="toggleEvent(this)"' : '' ?>>
+        <div class="event-header">
+          <div class="event-date-block">
+            <div class="event-date-month"><?= $dt->format('M') ?></div>
+            <div class="event-date-day"><?= $dt->format('j') ?></div>
+            <div class="event-date-year"><?= $dt->format('Y') ?></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name"><?= esc($e['name']) ?></div>
+            <?php if (!empty($e['venue'])): ?>
+              <div class="event-venue">
+                <?= esc($e['venue']) ?><?= !empty($e['address']) ? ' · ' . esc($e['address']) : '' ?>
+              </div>
             <?php endif; ?>
-            <?php if (!empty($e['description'])): ?>
-              <span class="event-tag"><?= esc(mb_strimwidth($e['description'], 0, 60, '…')) ?></span>
+            <div class="event-tags">
+              <?php if (!empty($e['cost'])): ?>
+                <span class="event-tag cost"><?= esc($e['cost']) ?></span>
+              <?php endif; ?>
+              <?php if (!empty($e['brief'])): ?>
+                <span class="event-tag"><?= esc($e['brief']) ?></span>
+              <?php endif; ?>
+            </div>
+          </div>
+          <div class="event-actions">
+            <?php if ($url): ?>
+              <a class="event-link-btn" href="<?= esc($url) ?>" target="_blank" rel="noopener"
+                 onclick="event.stopPropagation()" title="More info">&#8599;</a>
+            <?php endif; ?>
+            <?php if ($expandable): ?>
+              <span class="event-chevron">&#8964;</span>
             <?php endif; ?>
           </div>
         </div>
-        <?php if ($url): ?><div class="event-arrow">&#8599;</div><?php endif; ?>
-      </<?= $tag ?>>
+        <?php if ($expandable): ?>
+        <div class="event-body">
+          <?php if ($has_photo): ?>
+            <img src="<?= esc($e['photo_url']) ?>" alt="<?= esc($e['name']) ?>" class="event-body-photo">
+          <?php endif; ?>
+          <?php if ($has_desc): ?>
+            <div class="event-body-desc">
+              <?php foreach (explode("\n\n", str_replace("\r\n", "\n", $e['description'])) as $para): ?>
+                <?php if (trim($para)): ?><p><?= render_md(trim($para)) ?></p><?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+        </div>
+        <?php endif; ?>
+      </div>
       <?php endforeach; ?>
     </div>
   </div>
@@ -75,30 +100,67 @@ require __DIR__ . '/includes/header.php';
     <h2 class="section-title">Past Events</h2>
     <div class="events-list">
       <?php foreach ($past as $e):
-        $dt  = new DateTime($e['date']);
-        $url = $e['url'] ?? '';
-        $tag = $url ? 'a' : 'div';
-        $href = $url ? ' href="' . esc($url) . '" target="_blank" rel="noopener"' : '';
+        $dt         = new DateTime($e['date']);
+        $url        = $e['url'] ?? '';
+        $has_desc   = !empty(trim($e['description'] ?? ''));
+        $has_photo  = !empty($e['photo_url'] ?? '');
+        $expandable = $has_desc || $has_photo;
       ?>
-      <<?= $tag ?> class="event-card past"<?= $href ?>>
-        <div class="event-date-block">
-          <div class="event-date-month"><?= $dt->format('M') ?></div>
-          <div class="event-date-day"><?= $dt->format('j') ?></div>
-          <div class="event-date-year"><?= $dt->format('Y') ?></div>
+      <div class="event-card past<?= $expandable ? ' expandable' : '' ?>"
+           <?= $expandable ? 'onclick="toggleEvent(this)"' : '' ?>>
+        <div class="event-header">
+          <div class="event-date-block">
+            <div class="event-date-month"><?= $dt->format('M') ?></div>
+            <div class="event-date-day"><?= $dt->format('j') ?></div>
+            <div class="event-date-year"><?= $dt->format('Y') ?></div>
+          </div>
+          <div class="event-info">
+            <div class="event-name"><?= esc($e['name']) ?></div>
+            <?php if (!empty($e['venue'])): ?>
+              <div class="event-venue"><?= esc($e['venue']) ?></div>
+            <?php endif; ?>
+            <div class="event-tags">
+              <?php if (!empty($e['brief'])): ?>
+                <span class="event-tag"><?= esc($e['brief']) ?></span>
+              <?php endif; ?>
+            </div>
+          </div>
+          <div class="event-actions">
+            <?php if ($url): ?>
+              <a class="event-link-btn" href="<?= esc($url) ?>" target="_blank" rel="noopener"
+                 onclick="event.stopPropagation()" title="More info">&#8599;</a>
+            <?php endif; ?>
+            <?php if ($expandable): ?>
+              <span class="event-chevron">&#8964;</span>
+            <?php endif; ?>
+          </div>
         </div>
-        <div class="event-info">
-          <div class="event-name"><?= esc($e['name']) ?></div>
-          <?php if (!empty($e['venue'])): ?>
-            <div class="event-venue"><?= esc($e['venue']) ?></div>
+        <?php if ($expandable): ?>
+        <div class="event-body">
+          <?php if ($has_photo): ?>
+            <img src="<?= esc($e['photo_url']) ?>" alt="<?= esc($e['name']) ?>" class="event-body-photo">
+          <?php endif; ?>
+          <?php if ($has_desc): ?>
+            <div class="event-body-desc">
+              <?php foreach (explode("\n\n", str_replace("\r\n", "\n", $e['description'])) as $para): ?>
+                <?php if (trim($para)): ?><p><?= render_md(trim($para)) ?></p><?php endif; ?>
+              <?php endforeach; ?>
+            </div>
           <?php endif; ?>
         </div>
-        <?php if ($url): ?><div class="event-arrow">&#8599;</div><?php endif; ?>
-      </<?= $tag ?>>
+        <?php endif; ?>
+      </div>
       <?php endforeach; ?>
     </div>
   </div>
   <?php endif; ?>
 
 </div>
+
+<script>
+function toggleEvent(card) {
+  card.classList.toggle('open');
+}
+</script>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

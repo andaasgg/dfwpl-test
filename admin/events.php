@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'venue'       => trim($_POST['venue']       ?? ''),
             'address'     => trim($_POST['address']     ?? ''),
             'cost'        => trim($_POST['cost']        ?? ''),
+            'brief'       => trim($_POST['brief']       ?? ''),
             'description' => trim($_POST['description'] ?? ''),
             'url'         => trim($_POST['url']         ?? ''),
             'photo_url'   => $photo,
@@ -161,9 +162,18 @@ $today = date('Y-m-d');
           </div>
 
           <div class="form-group" style="grid-column:1/-1;">
-            <label class="form-label" for="e_desc">Description (optional)</label>
+            <label class="form-label" for="e_brief">Format / Type (optional)</label>
+            <input class="form-input" type="text" id="e_brief" name="brief"
+                   value="<?= esc($edit_event['brief'] ?? '') ?>"
+                   placeholder="e.g. Match play qualifying · Double-elimination final">
+            <div class="form-hint">One-line summary shown on the card — tournament format, special notes, etc.</div>
+          </div>
+
+          <div class="form-group" style="grid-column:1/-1;">
+            <label class="form-label" for="e_desc">Full Description (optional)</label>
             <textarea class="form-textarea" id="e_desc" name="description"
-                      rows="3"><?= esc($edit_event['description'] ?? '') ?></textarea>
+                      rows="6"><?= esc($edit_event['description'] ?? '') ?></textarea>
+            <div class="form-hint">Shown when a visitor expands the event. Supports **bold**, *italic*, and [link text](url).</div>
           </div>
 
           <div class="form-group" style="grid-column:1/-1;">
@@ -171,7 +181,7 @@ $today = date('Y-m-d');
             <input class="form-input" type="url" id="e_url" name="url"
                    value="<?= esc($edit_event['url'] ?? '') ?>"
                    placeholder="https://...">
-            <div class="form-hint">If provided, the event card becomes a clickable link.</div>
+            <div class="form-hint">If provided, a ↗ button appears on the card linking to this URL.</div>
           </div>
 
           <div class="form-group" style="grid-column:1/-1;">
